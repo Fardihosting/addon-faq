@@ -1,0 +1,13 @@
+{
+    "name": "Faq",
+    "description": "faq",
+    "uuid": "faq",
+    "version": "1.0",
+    "author": {
+        "name": "yes",
+        "email": "yes"
+    },
+    "providers": [
+        "App\\Addons\\Faq\\FaqServiceProvider"
+    ]
+}
