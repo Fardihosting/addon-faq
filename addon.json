@@ -4,8 +4,8 @@
     "uuid": "faq",
     "version": "1.0",
     "author": {
-        "name": "yes",
-        "email": "yes"
+        "name": "Vincent V.",
+        "email": "vincent.v@fardihosting.fr"
     },
     "providers": [
         "App\\Addons\\Faq\\FaqServiceProvider"
