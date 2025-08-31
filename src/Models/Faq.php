@@ -3,12 +3,30 @@
 namespace App\Addons\Faq\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Addons\Faq\Models\Group;
+use App\Models\Traits\Translatable; 
+use App\Models\Store\Group;
 
 class Faq extends Model
 {
-    protected $table = 'faqs';              // si le nom de table est "faqs"
-    protected $fillable = ['title', 'reponse', 'group_id'];
+    use Translatable;
+
+    protected $table = 'faqs';       
+
+    protected $fillable = [
+        'title',
+        'reponse',
+        'group_id',
+        'pinned',
+    ];
+
+    protected $casts = [
+        'pinned' => 'boolean',
+    ];
+
+    protected array $translatableKeys = [
+        'title'   => 'text',
+        'reponse' => 'textarea',
+    ];
 
     public function group()
     {

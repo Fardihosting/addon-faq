@@ -10,7 +10,7 @@
 namespace App\Addons\Faq\Controllers\Admin;
 
 use App\Addons\Faq\Models\Faq;
-use App\Addons\Faq\Models\Group;
+use App\Models\Store\Group;
 use App\Http\Controllers\Admin\AbstractCrudController;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -48,16 +48,13 @@ class FaqController extends AbstractCrudController
 
     public function show(Faq $faq): View
     {
-        // on charge le groupe pour éviter un N+1 si tu l'affiches
-        $faq->load('group');
+        $faq->load('group', 'translations');
 
-        // liste pour le select [id => name]
         $groups = Group::orderBy('name')->pluck('name', 'id')->toArray();
 
-        // showView() affichera $this->viewPath.'show' avec les variables fournies
         return $this->showView([
             'faq'       => $faq,
-            'groups'    => $groups,      // <- important
+            'groups'    => $groups,
             'routePath' => $this->routePath,
         ]);
     }
@@ -112,6 +109,6 @@ class FaqController extends AbstractCrudController
         $faq->update($data);
 
         return redirect()->route($this->routePath.'.index')
-            ->with('success', __('global.updated'));
+            ->with('success', __('faq::messages.faq.update'));
     }
 }
