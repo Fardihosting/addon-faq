@@ -33,7 +33,6 @@
           'translatable'  => true,
           'translate_key' => 'title',
         ])
-        {{-- @include('admin/shared/input', ['name' => 'name', 'label' => __('global.name'), 'value' => old('name', $item->name), 'translatable' => true]) --}}
         @error('title') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
 
         <div>
