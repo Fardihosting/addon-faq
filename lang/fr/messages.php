@@ -36,4 +36,8 @@ return [
     'bouton' => [
         'update' => 'Mettre à jour',
     ],
+    'client' => [
+        'title' => 'FAQ',
+        'description' => 'Réponses aux questions les plus fréquemment posées.',
+    ],
 ];

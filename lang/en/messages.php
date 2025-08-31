@@ -36,4 +36,8 @@ return [
     'bouton' => [
         'update' => 'Update',
     ],
+    'client' => [
+        'title' => 'FAQ',
+        'description' => 'Answers to the most frequently asked questions.',
+    ],
 ];
