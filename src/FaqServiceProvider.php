@@ -6,6 +6,7 @@ use \App\Extensions\BaseAddonServiceProvider;
 use App\Core\Menu\AdminMenuItem;
 use App\Core\Admin\Dashboard\AdminCountWidget;
 use Illuminate\Support\Facades\Route;
+use App\Addons\Faq\Controllers\Admin\FaqController;
 
 class FaqServiceProvider extends BaseAddonServiceProvider
 {
@@ -31,7 +32,7 @@ class FaqServiceProvider extends BaseAddonServiceProvider
         'faq::messages.settings.title',// Titre de l'item
         'faq::messages.settings.description', // Description de l'item
         'bi bi-gear',                  // Icône
-        '', // Action ou route
+        [FaqController::class, 'index'], // Action ou route
         'admin.settings.manage'        // Permission requise pour voir cet item
         );
     }
