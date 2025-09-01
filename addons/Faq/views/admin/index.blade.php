@@ -131,14 +131,13 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-
-                    {{-- Pagination si disponible --}}
+                        {{-- Pagination si disponible --}}
                     @if(method_exists($faqs, 'links'))
-                        <div class="mt-4">
-                            {{ $faqs->links('pagination::tailwind') }}
+                        <div class="py-1 px-4 mx-auto">
+                            {{ $faqs->links('admin.shared.layouts.pagination') }}
                         </div>
                     @endif
+                    </div>
                 </div>
             </div>
         </div>
