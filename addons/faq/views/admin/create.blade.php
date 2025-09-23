@@ -26,40 +26,29 @@
       </div>
 
       <div class="card-body space-y-5">
-        <div>
-          <label class="label">{{ __('faq::messages.formulaire.title') }}</label>
-          <input type="text" name="title" value="{{ old('title') }}" class="input-text w-full">
-          @error('title')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
-        </div>
-
-        <div>
-            <label for="group_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ __('faq::messages.formulaire.group') }}
-            </label>
-            <select id="group_id" name="group_id"
-                class="block w-full rounded-md border border-gray-300 dark:border-gray-700
-                    bg-gray-50 dark:bg-gray-700
-                    text-gray-900 dark:text-gray-200
-                    placeholder-gray-400
-                    focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                @foreach ($groups as $id => $name)
-                    <option value="{{ $id }}" @selected(old('group_id') == $id)>{{ $name }}</option>
-                @endforeach
-            </select>
-            @error('group_id')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div>
-          <label class="label">{{ __('faq::messages.formulaire.reponse') }}</label>
-          <textarea name="reponse" rows="12" class="input-text w-full">{{ old('reponse') }}</textarea>
-          @error('reponse')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
-        </div>
+        @include('admin/shared/input', [
+          'name'          => 'title',
+          'label'         => __('faq::messages.formulaire.title'),
+          'value'         => old('title', $faq->title),
+        ])
+        @include('admin/shared/select', [
+          'name'          => 'group_id',
+          'label'         => __('faq::messages.formulaire.group'),
+          'options'       => $groups,
+          'value'         => old('group_id', $faq->group_id ?? ''),
+        ])
+        @include('admin/shared/textarea', [
+          'name'          => 'answer',
+          'label'         => __('faq::messages.formulaire.answer'),
+          'value'         => old('answer', $faq->answer),
+          'rows'          => 12,
+        ])
+        @include('admin/shared/input', [
+          'type'          => 'number',
+          'name'          => 'sort_order',
+          'label'         => __('global.sort_order'),
+          'value'         => old('sort_order', $faq->sort_order ?? 0),
+        ])
       </div>
     </div>
   </form>

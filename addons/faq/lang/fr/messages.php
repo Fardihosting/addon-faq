@@ -31,7 +31,7 @@ return [
     'formulaire' => [
         'title' => 'Titre',
         'group' => 'Groupe',
-        'reponse' => 'Votre réponse',
+        'answer' => 'Votre réponse',
     ],
     'bouton' => [
         'update' => 'Mettre à jour',

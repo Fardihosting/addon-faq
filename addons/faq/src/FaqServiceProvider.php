@@ -14,50 +14,36 @@ class FaqServiceProvider extends BaseAddonServiceProvider
   protected string $name = 'faq';
   protected string $version = '1.0.0';
 
-  public function register()
-    {
-        //
-    }
-
     public function boot()
     {
         $this->loadRoutes();
-        $this->loadTranslations(); // Permet de charger les traductions (lang/fr et lang/en)
-        $this->loadMigrations(); // Permet de charger les migrations
-        $this->loadViewsFrom(__DIR__.'/../views', 'faq');
+        $this->loadTranslations();
+        $this->loadMigrations();
+        $this->loadViews();
 
         $this->app['settings']->addCardItem(
-        'personalization',                // UUID de la card
-        'faq',               // UUID de l'item
-        'faq::messages.settings.title',// Titre de l'item
-        'faq::messages.settings.description', // Description de l'item
-        'bi bi-gear',                  // Icône
-        [FaqController::class, 'index'], // Action ou route
-        'admin.settings.manage'        // Permission requise pour voir cet item
+        'personalization',
+        'faq',
+        'faq::messages.settings.title',
+        'faq::messages.settings.description',
+        'bi bi-gear',
+        [FaqController::class, 'index'],
+        'admin.settings.manage'
         );
     }
     public function loadRoutes()
     {
-        // Web
         Route::middleware('web')->group(function () {
             require __DIR__.'/../routes/web.php';
         });
 
-        // Admin
         Route::middleware(['web', 'admin'])
-            ->prefix(admin_prefix())   // → /admin
+            ->prefix(admin_prefix())
             ->name('admin.')
             ->group(function () {
                 Route::prefix('faq')->name('faq.')->group(function () {
                     require __DIR__.'/../routes/admin.php';
                 });
-            });
-
-        // API
-        Route::middleware('api')
-            ->prefix('api')
-            ->group(function () {
-                require __DIR__.'/../routes/api.php';
             });
     }
 }

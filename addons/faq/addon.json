@@ -1,6 +1,6 @@
 {
     "name": "Faq",
-    "description": "faq",
+    "description": "Addon to manage Frequently Asked Questions",
     "uuid": "faq",
     "version": "1.0",
     "author": {

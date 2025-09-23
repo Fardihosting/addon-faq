@@ -14,18 +14,22 @@ class Faq extends Model
 
     protected $fillable = [
         'title',
-        'reponse',
+        'answer',
         'group_id',
-        'pinned',
+        'order',
     ];
 
     protected $casts = [
-        'pinned' => 'boolean',
+        'order' => 'integer',
     ];
 
     protected array $translatableKeys = [
         'title'   => 'text',
-        'reponse' => 'textarea',
+        'answer' => 'textarea',
+    ];
+
+    protected $attributes = [
+        'order' => 0,
     ];
 
     public function group()

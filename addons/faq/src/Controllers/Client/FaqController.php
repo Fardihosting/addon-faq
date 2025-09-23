@@ -17,7 +17,7 @@ use Illuminate\View\View;
 class FaqController extends Controller
 {
     protected string $model = Faq::class;
-    protected string $viewPath = 'faq::default.';
+    protected string $viewPath = 'faq::';
     protected string $routePath = 'client.faq';
 
     public function group(Group $group): View
@@ -26,10 +26,9 @@ class FaqController extends Controller
                     ->orderBy('id', 'desc')
                     ->get();
 
-        return view($this->viewPath.'index', [
+        return view('faq::index', [
             'group' => $group,
-            'faqs'  => $faqs,
-            'routePath' => $this->routePath,
+            'faqs'  => $faqs
         ]);
     }
 }

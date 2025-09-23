@@ -57,7 +57,7 @@
                                 </thead>
 
                                 <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                                    @if (($faqs->count() ?? count($faqs ?? [])) === 0)
+                                    @if ($items->count() === 0)
                                         <tr class="bg-white hover:bg-gray-50 dark:bg-slate-900 dark:hover:bg-slate-800">
                                             <td colspan="5" class="px-6 py-8 whitespace-nowrap text-center">
                                                 <div class="flex flex-col items-center">
@@ -70,7 +70,7 @@
                                         </tr>
                                     @endif
 
-                                    @foreach($faqs as $faq)
+                                    @foreach($items as $faq)
                                         <tr class="bg-white hover:bg-gray-50 dark:bg-slate-900 dark:hover:bg-slate-800">
                                             <!-- ID -->
                                             <td class="h-px w-px whitespace-nowrap">
@@ -131,15 +131,11 @@
                                 </tbody>
                             </table>
                         </div>
-                        {{-- Pagination si disponible --}}
-                    @if(method_exists($faqs, 'links'))
                         <div class="py-1 px-4 mx-auto">
-                            {{ $faqs->links('admin.shared.layouts.pagination') }}
+                            {{ $items->links('admin.shared.layouts.pagination') }}
                         </div>
-                    @endif
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 @endsection

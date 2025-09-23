@@ -31,7 +31,7 @@ return [
     'formulaire' => [
         'title' => 'Title',
         'group' => 'Group',
-        'reponse' => 'Your answer',
+        'answer' => 'Your answer',
     ],
     'bouton' => [
         'update' => 'Update',

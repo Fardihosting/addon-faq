@@ -13,43 +13,45 @@ use App\Addons\Faq\Models\Faq;
 use App\Models\Store\Group;
 use App\Http\Controllers\Admin\AbstractCrudController;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class FaqController extends AbstractCrudController
 {
     protected string $model = Faq::class;
-    protected string $viewPath = 'faq::admin.';
+    protected string $viewPath = 'faq_admin::';
     protected string $routePath = 'admin.faq';
+    protected array $relations = ['group'];
+    protected ?string $managedPermission = 'admin.manage_faqs';
+    protected string $searchField = 'title';
 
-    public function index(Request $request): View
+    public function getCreateParams()
     {
-        $q        = $request->string('q');
-        $groupId  = $request->integer('group_id');
-
-        $faqs = Faq::query()
-            ->with('group')
-            ->when($q, fn ($qr) => $qr->where(function ($w) use ($q) {
-                $w->where('title', 'like', "%{$q}%")
-                  ->orWhere('reponse', 'like', "%{$q}%");
-            }))
-            ->when($groupId, fn ($qr) => $qr->where('group_id', $groupId))
-            ->latest('id')
-            ->paginate(15);
-
-        // Pour le select des groupes [id => name]
-        $groups = Group::query()->orderBy('name')->pluck('name', 'id')->toArray();
-
-        return view($this->viewPath.'index', [
-            'faqs'      => $faqs,
-            'groups'    => $groups,
-            'routePath' => $this->routePath,
-        ]);
+        $data = parent::getCreateParams();
+        $data['faq'] = new Faq();
+        $data['groups'] = Group::orderBy('name')->pluck('name', 'id')->toArray();
+        return $data;
     }
 
-    public function show(Faq $faq): View
+    public function destroy(Faq $faq)
     {
-        $faq->load('group', 'translations');
+        $faq->delete();
+        return $this->deleteRedirect($faq);
+    }
 
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'title'    => ['required','string','max:255'],
+            'answer'  => ['required','string'],
+            'group_id' => ['nullable','integer','exists:groups,id'],
+        ]);
+
+        $faq = Faq::create($data);
+
+        return $this->storeRedirect($faq);
+    }
+
+    public function show(Faq $faq)
+    {
         $groups = Group::orderBy('name')->pluck('name', 'id')->toArray();
 
         return $this->showView([
@@ -58,57 +60,16 @@ class FaqController extends AbstractCrudController
             'routePath' => $this->routePath,
         ]);
     }
-
-    public function destroy(Faq $faq)
-    {
-        $faq->delete();
-
-        return redirect()->route($this->routePath.'.index')
-            ->with('success', __('faq::messages.faq.delete'));
-    }
-
-    public function create(Request $request): View
-    {
-        return view($this->viewPath.'create', [
-            'routePath' => $this->routePath,
-            'groups'    => Group::orderBy('name')->pluck('name', 'id')->toArray(),
-        ]);
-    }
-
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'title'    => ['required','string','max:255'],
-            'reponse'  => ['required','string'],
-            'group_id' => ['nullable','integer','exists:groups,id'],
-        ]);
-
-        $faq = Faq::create($data);
-
-        return redirect()->route($this->routePath.'.index')
-            ->with('success', __('faq::messages.faq.create'));
-    }
-
-    public function edit(Faq $faq): View
-    {
-        return view($this->viewPath.'edit', [
-            'faq'       => $faq,
-            'routePath' => $this->routePath,
-            'groups'    => Group::orderBy('name')->pluck('name', 'id')->toArray(),
-        ]);
-    }
-
     public function update(Request $request, Faq $faq)
     {
         $data = $request->validate([
             'title'    => ['required','string','max:255'],
-            'reponse'  => ['required','string'],
+            'answer'  => ['required','string'],
             'group_id' => ['nullable','integer','exists:groups,id'],
         ]);
 
         $faq->update($data);
 
-        return redirect()->route($this->routePath.'.index')
-            ->with('success', __('faq::messages.faq.update'));
+        return $this->updateRedirect($faq);
     }
 }

@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('faqs', function (Blueprint $table) {
             $table->id();
-            $table->string('title');                 // Titre de la question
-            $table->text('reponse');                 // Réponse
-            $table->unsignedBigInteger('group_id');  // Relation avec la table groups
+            $table->string('title');
+            $table->text('answer');
+            $table->integer('sort_order')->default(0);
+            $table->unsignedBigInteger('group_id');
             $table->timestamps();
-
-            // 🔗 Clé étrangère vers groups.id
             $table->foreign('group_id')
                   ->references('id')
                   ->on('groups')
-                  ->onDelete('cascade'); // si un group est supprimé → supprime aussi les faqs
+                  ->onDelete('cascade');
         });
     }
 
